@@ -8,43 +8,54 @@ type Props = {
   slug: string;
   title: string;
   description: string;
+  category?: string;
 };
 
 const sampleText = 'ToolNest helps freelancers and small teams finish everyday web tasks faster.';
 
-export default function BrowserToolRunner({ slug, title, description }: Props) {
+export default function BrowserToolRunner({ slug, title, description, category = 'Productivity' }: Props) {
   return (
     <div className="space-y-6">
       <header>
         <h1 className="section-title">{title}</h1>
         <p className="mt-2 text-slate-600">{description}</p>
       </header>
-      {renderTool(slug)}
+      {renderTool(slug, title, category)}
     </div>
   );
 }
 
-function renderTool(slug: string) {
+function renderTool(slug: string, title: string, category: string) {
   if (['word-counter', 'character-counter'].includes(slug)) return <CounterTool mode={slug} />;
   if (slug === 'text-case-converter') return <TextCaseTool />;
   if (['remove-extra-spaces', 'duplicate-line-remover', 'text-sorter', 'slug-generator'].includes(slug)) return <TextTransformTool mode={slug} />;
   if (slug === 'json-formatter') return <JsonTool />;
+  if (slug === 'html-css-js-minifier') return <MinifierTool />;
+  if (slug === 'sql-formatter') return <SqlFormatterTool />;
   if (['base64-encoder-decoder', 'url-encoder-decoder', 'html-entity-encoder-decoder'].includes(slug)) return <CodecTool mode={slug} />;
   if (slug === 'regex-tester') return <RegexTool />;
   if (slug === 'jwt-decoder') return <JwtTool />;
   if (slug === 'uuid-generator') return <UuidTool />;
   if (slug === 'hash-generator') return <HashTool />;
   if (['meta-tag-generator', 'open-graph-preview'].includes(slug)) return <MetaTool preview={slug === 'open-graph-preview'} />;
+  if (slug === 'serp-preview-tool') return <MetaTool preview />;
+  if (slug === 'seo-score-checker') return <SeoScoreTool />;
   if (slug === 'keyword-density-checker') return <KeywordTool />;
+  if (slug === 'xml-sitemap-validator') return <XmlValidatorTool />;
   if (['robots-txt-generator', 'sitemap-xml-generator', 'schema-markup-generator'].includes(slug)) return <SeoGenerator mode={slug} />;
   if (['image-compressor', 'image-resizer'].includes(slug)) return <ImageCanvasTool mode={slug} />;
-  if (['color-picker', 'gradient-generator', 'css-box-shadow-generator'].includes(slug)) return <DesignTool mode={slug} />;
-  if (['profit-margin-calculator', 'gst-tax-calculator', 'loan-emi-calculator', 'paypal-stripe-fee-calculator', 'discount-calculator'].includes(slug)) return <BusinessCalculator mode={slug} />;
+  if (slug === 'image-to-base64') return <ImageToBase64Tool />;
+  if (['color-picker', 'gradient-generator', 'css-box-shadow-generator', 'color-palette-generator', 'glassmorphism-generator', 'neumorphism-generator', 'svg-blob-generator', 'css-animation-generator'].includes(slug)) return <DesignTool mode={slug} />;
+  if (['profit-margin-calculator', 'gst-tax-calculator', 'loan-emi-calculator', 'paypal-stripe-fee-calculator', 'discount-calculator', 'currency-converter', 'subscription-calculator'].includes(slug)) return <BusinessCalculator mode={slug} />;
   if (slug === 'password-generator') return <PasswordTool />;
   if (slug === 'age-calculator') return <AgeTool />;
   if (slug === 'unit-converter') return <UnitTool />;
   if (slug === 'timestamp-converter') return <TimestampTool />;
-  return null;
+  if (slug === 'lorem-ipsum-generator') return <LoremTool />;
+  if (slug === 'markdown-previewer') return <MarkdownPreviewTool />;
+  if (slug === 'text-to-speech') return <TextToSpeechTool />;
+  if (slug === 'plagiarism-checker') return <SimilarityTool />;
+  return <UniversalTool slug={slug} title={title} category={category} />;
 }
 
 function ToolGrid({ children }: { children: ReactNode }) {
@@ -151,6 +162,22 @@ function JsonTool() {
   );
 }
 
+function MinifierTool() {
+  const [code, setCode] = useState('<div class="card">\\n  <h1>Hello ToolNest</h1>\\n</div>');
+  const output = useMemo(() => code.replace(/\/\*[\s\S]*?\*\//g, '').replace(/<!--[\s\S]*?-->/g, '').replace(/\s+/g, ' ').replace(/\s*([{}:;,>])\s*/g, '$1').trim(), [code]);
+  return <ToolGrid><div className="card space-y-4"><textarea className="input h-64 font-mono text-sm" value={code} onChange={(event) => setCode(event.target.value)} /></div><OutputPanel value={output} slug="html-css-js-minifier" /></ToolGrid>;
+}
+
+function SqlFormatterTool() {
+  const [sql, setSql] = useState('select id,name,email from users where active=1 order by created_at desc');
+  const output = useMemo(() => sql
+    .replace(/\s+/g, ' ')
+    .replace(/\b(select|from|where|and|or|order by|group by|having|limit|join|left join|right join|inner join|values|set)\b/gi, '\n$1')
+    .replace(/,/g, ',\n  ')
+    .trim(), [sql]);
+  return <ToolGrid><div className="card"><textarea className="input h-64 font-mono text-sm" value={sql} onChange={(event) => setSql(event.target.value)} /></div><OutputPanel value={output} slug="sql-formatter" /></ToolGrid>;
+}
+
 function CodecTool({ mode }: { mode: string }) {
   const [text, setText] = useState(mode === 'base64-encoder-decoder' ? 'ToolNest' : 'https://example.com/search?q=tool nest');
   const encode = () => {
@@ -248,6 +275,24 @@ function MetaTool({ preview }: { preview: boolean }) {
   );
 }
 
+function SeoScoreTool() {
+  const [title, setTitle] = useState('ToolNest SEO tools for freelancers');
+  const [description, setDescription] = useState('Use free SEO tools to improve titles, descriptions, links, content, and technical checks.');
+  const [content, setContent] = useState(sampleText);
+  const score = useMemo(() => {
+    let value = 0;
+    if (title.length >= 30 && title.length <= 60) value += 25;
+    if (description.length >= 120 && description.length <= 160) value += 25;
+    if (content.split(/\s+/).length >= 80) value += 20;
+    if (/https?:\/\//.test(content)) value += 10;
+    if (/^#|<h1/i.test(content)) value += 10;
+    if (/\b(faq|question|answer)\b/i.test(content)) value += 10;
+    return value;
+  }, [content, description, title]);
+  const output = `SEO Score: ${score}/100\n\nTitle length: ${title.length}\nDescription length: ${description.length}\nContent words: ${content.trim().split(/\s+/).filter(Boolean).length}\n\nRecommendations:\n${score < 25 ? '- Add stronger title and meta description.\n' : ''}${description.length < 120 ? '- Expand meta description toward 120-160 characters.\n' : ''}${content.split(/\s+/).length < 80 ? '- Add more useful page copy and headings.\n' : ''}- Include internal links, FAQs, and clear page intent.`;
+  return <ToolGrid><div className="card space-y-4"><input className="input" value={title} onChange={(event) => setTitle(event.target.value)} /><textarea className="input h-24" value={description} onChange={(event) => setDescription(event.target.value)} /><textarea className="input h-44" value={content} onChange={(event) => setContent(event.target.value)} /></div><OutputPanel value={output} slug="seo-score-checker" /></ToolGrid>;
+}
+
 function KeywordTool() {
   const [text, setText] = useState(sampleText);
   const rows = useMemo(() => {
@@ -260,6 +305,18 @@ function KeywordTool() {
     return Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([word, count]) => [word, count, `${((count / total) * 100).toFixed(1)}%`]);
   }, [text]);
   return <ToolGrid><div className="card"><textarea className="input h-64" value={text} onChange={(event) => setText(event.target.value)} /></div><div className="card space-y-2">{rows.map(([word, count, pct]) => <div className="surface flex items-center justify-between p-3" key={word}><span className="font-semibold">{word}</span><span className="text-sm text-slate-600">{count} - {pct}</span></div>)}</div></ToolGrid>;
+}
+
+function XmlValidatorTool() {
+  const [xml, setXml] = useState('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>https://toolnests.app/</loc></url>\n</urlset>');
+  const result = useMemo(() => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(xml, 'application/xml');
+    const error = doc.querySelector('parsererror')?.textContent;
+    const urls = Array.from(doc.querySelectorAll('loc')).map((item) => item.textContent || '').filter(Boolean);
+    return error ? `Invalid XML:\n${error}` : `Valid XML sitemap\nURLs found: ${urls.length}\n\n${urls.join('\n')}`;
+  }, [xml]);
+  return <ToolGrid><div className="card"><textarea className="input h-64 font-mono text-sm" value={xml} onChange={(event) => setXml(event.target.value)} /></div><OutputPanel value={result} slug="xml-sitemap-validator" /></ToolGrid>;
 }
 
 function SeoGenerator({ mode }: { mode: string }) {
@@ -312,8 +369,25 @@ function DesignTool({ mode }: { mode: string }) {
   const [b, setB] = useState('#14b8a6');
   const [angle, setAngle] = useState(135);
   const [blur, setBlur] = useState(24);
-  const css = mode === 'gradient-generator' ? `background: linear-gradient(${angle}deg, ${a}, ${b});` : mode === 'css-box-shadow-generator' ? `box-shadow: 0 12px ${blur}px rgba(15, 23, 42, 0.22);` : `HEX: ${a}\nRGB: ${hexToRgb(a)}\nHSL: ${hexToHsl(a)}`;
-  return <ToolGrid><div className="card space-y-4"><input className="h-14 w-full rounded-lg border border-slate-200" type="color" value={a} onChange={(event) => setA(event.target.value)} />{mode === 'gradient-generator' && <><input className="h-14 w-full rounded-lg border border-slate-200" type="color" value={b} onChange={(event) => setB(event.target.value)} /><input className="w-full" type="range" min="0" max="360" value={angle} onChange={(event) => setAngle(Number(event.target.value))} /></>}{mode === 'css-box-shadow-generator' && <input className="w-full" type="range" min="0" max="60" value={blur} onChange={(event) => setBlur(Number(event.target.value))} />}</div><div className="card space-y-4"><div className="h-44 rounded-lg border border-slate-200" style={mode === 'gradient-generator' ? { background: `linear-gradient(${angle}deg, ${a}, ${b})` } : mode === 'css-box-shadow-generator' ? { boxShadow: `0 12px ${blur}px rgba(15, 23, 42, 0.22)` } : { background: a }} /><OutputPanel value={css} slug={mode} /></div></ToolGrid>;
+  const palette = [a, shiftHex(a, 35), shiftHex(a, -35), b, '#111827'];
+  const blob = `<svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg"><path fill="${a}" d="M250 58c39 34 49 99 25 147s-82 79-136 67S34 206 36 151 87 19 145 12s66 12 105 46z"/></svg>`;
+  const css = mode === 'gradient-generator'
+    ? `background: linear-gradient(${angle}deg, ${a}, ${b});`
+    : mode === 'css-box-shadow-generator'
+      ? `box-shadow: 0 12px ${blur}px rgba(15, 23, 42, 0.22);`
+      : mode === 'glassmorphism-generator'
+        ? `background: rgba(255,255,255,0.24);\nbackdrop-filter: blur(${Math.round(blur / 2)}px);\nborder: 1px solid rgba(255,255,255,0.38);`
+        : mode === 'neumorphism-generator'
+          ? `background: #eef2f7;\nbox-shadow: ${Math.round(blur / 2)}px ${Math.round(blur / 2)}px ${blur}px #cbd5e1, -${Math.round(blur / 2)}px -${Math.round(blur / 2)}px ${blur}px #ffffff;`
+          : mode === 'color-palette-generator'
+            ? palette.join('\n')
+            : mode === 'svg-blob-generator'
+              ? blob
+              : mode === 'css-animation-generator'
+                ? `@keyframes toolnest-fade-slide {\n  from { opacity: 0; transform: translateY(12px); }\n  to { opacity: 1; transform: translateY(0); }\n}\n.element { animation: toolnest-fade-slide 420ms ease both; }`
+                : `HEX: ${a}\nRGB: ${hexToRgb(a)}\nHSL: ${hexToHsl(a)}`;
+  const previewStyle = mode === 'gradient-generator' ? { background: `linear-gradient(${angle}deg, ${a}, ${b})` } : mode.includes('shadow') || mode === 'neumorphism-generator' ? { boxShadow: `0 12px ${blur}px rgba(15, 23, 42, 0.22)`, background: '#ffffff' } : { background: a };
+  return <ToolGrid><div className="card space-y-4"><input className="h-14 w-full rounded-lg border border-slate-200" type="color" value={a} onChange={(event) => setA(event.target.value)} /><input className="h-14 w-full rounded-lg border border-slate-200" type="color" value={b} onChange={(event) => setB(event.target.value)} /><input className="w-full" type="range" min="0" max="360" value={angle} onChange={(event) => setAngle(Number(event.target.value))} /><input className="w-full" type="range" min="0" max="60" value={blur} onChange={(event) => setBlur(Number(event.target.value))} /></div><div className="card space-y-4"><div className="h-44 rounded-lg border border-slate-200" style={previewStyle} /><OutputPanel value={css} slug={mode} /></div></ToolGrid>;
 }
 
 function BusinessCalculator({ mode }: { mode: string }) {
@@ -325,6 +399,8 @@ function BusinessCalculator({ mode }: { mode: string }) {
     if (mode === 'gst-tax-calculator') return `Tax: ${((a * b) / 100).toFixed(2)}\nTotal with tax: ${(a + (a * b) / 100).toFixed(2)}\nBase from tax-inclusive: ${(a / (1 + b / 100)).toFixed(2)}`;
     if (mode === 'loan-emi-calculator') { const r = b / 12 / 100; const n = c; const emi = r ? (a * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1) : a / n; return `Monthly EMI: ${emi.toFixed(2)}\nTotal payment: ${(emi * n).toFixed(2)}\nTotal interest: ${(emi * n - a).toFixed(2)}`; }
     if (mode === 'paypal-stripe-fee-calculator') { const fee = a * (b / 100) + c; return `Fee: ${fee.toFixed(2)}\nYou receive: ${(a - fee).toFixed(2)}\nCharge to receive target: ${((a + c) / (1 - b / 100)).toFixed(2)}`; }
+    if (mode === 'currency-converter') return `${a} x ${b} = ${(a * b).toFixed(2)}`;
+    if (mode === 'subscription-calculator') return `Monthly: ${a.toFixed(2)}\nAnnual: ${(a * 12).toFixed(2)}\nUsers: ${b}\nAnnual team value: ${(a * 12 * b).toFixed(2)}`;
     return `Discount: ${((a * b) / 100).toFixed(2)}\nSale price: ${(a - (a * b) / 100).toFixed(2)}\nYou save: ${b.toFixed(2)}%`;
   }, [a, b, c, mode]);
   return <ToolGrid><div className="card space-y-4"><NumberInput label={mode === 'loan-emi-calculator' ? 'Loan amount' : 'Amount / price'} value={a} setValue={setA} /><NumberInput label={mode === 'loan-emi-calculator' ? 'Annual interest %' : mode === 'profit-margin-calculator' ? 'Cost' : 'Percent'} value={b} setValue={setB} />{['loan-emi-calculator', 'paypal-stripe-fee-calculator'].includes(mode) && <NumberInput label={mode === 'loan-emi-calculator' ? 'Months' : 'Fixed fee'} value={c} setValue={setC} />}</div><OutputPanel value={output} slug={mode} /></ToolGrid>;
@@ -364,6 +440,58 @@ function TimestampTool() {
   return <ToolGrid><div className="card space-y-4"><input className="input" type="number" value={timestamp} onChange={(event) => setTimestamp(Number(event.target.value))} /><input className="input" type="datetime-local" value={date} onChange={(event) => setDate(event.target.value)} /></div><OutputPanel value={`Timestamp to date: ${readable}\nDate to timestamp: ${fromDate}`} slug="timestamp-converter" /></ToolGrid>;
 }
 
+function LoremTool() {
+  const [paragraphs, setParagraphs] = useState(3);
+  const base = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae sem vel justo faucibus aliquet. Praesent non lorem at nibh facilisis luctus.';
+  const output = Array.from({ length: paragraphs }, () => base).join('\n\n');
+  return <div className="card space-y-4"><input className="input max-w-xs" type="number" min="1" max="20" value={paragraphs} onChange={(event) => setParagraphs(Number(event.target.value))} /><OutputPanel value={output} slug="lorem-ipsum-generator" /></div>;
+}
+
+function MarkdownPreviewTool() {
+  const [text, setText] = useState('# ToolNest\n\n- Fast tools\n- Clean workflow\n\n**Ready to ship.**');
+  const plain = text.replace(/^### (.*)$/gm, '$1').replace(/^## (.*)$/gm, '$1').replace(/^# (.*)$/gm, '$1').replace(/\*\*(.*?)\*\*/g, '$1').replace(/`(.*?)`/g, '$1');
+  return <ToolGrid><div className="card"><textarea className="input h-64 font-mono text-sm" value={text} onChange={(event) => setText(event.target.value)} /></div><div className="card"><div className="surface whitespace-pre-wrap p-4 leading-7 text-slate-800">{plain}</div></div></ToolGrid>;
+}
+
+function ImageToBase64Tool() {
+  const [output, setOutput] = useState('');
+  const convert = (file: File | null) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setOutput(String(reader.result));
+    reader.readAsDataURL(file);
+  };
+  return <ToolGrid><div className="card"><input className="input" type="file" accept="image/*" onChange={(event) => convert(event.target.files?.[0] || null)} /></div><OutputPanel value={output} slug="image-to-base64" /></ToolGrid>;
+}
+
+function TextToSpeechTool() {
+  const [text, setText] = useState('Welcome to ToolNest text to speech.');
+  const speak = () => {
+    if ('speechSynthesis' in window) window.speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+  };
+  return <ToolGrid><div className="card space-y-4"><textarea className="input h-44" value={text} onChange={(event) => setText(event.target.value)} /><button className="btn" onClick={speak}>Play speech</button></div><OutputPanel value={text} slug="text-to-speech" /></ToolGrid>;
+}
+
+function SimilarityTool() {
+  const [a, setA] = useState('ToolNest helps creators build faster.');
+  const [b, setB] = useState('ToolNest helps freelancers create faster.');
+  const score = useMemo(() => {
+    const one = new Set(a.toLowerCase().match(/\b\w+\b/g) || []);
+    const two = new Set(b.toLowerCase().match(/\b\w+\b/g) || []);
+    const overlap = Array.from(one).filter((word) => two.has(word)).length;
+    const total = new Set([...Array.from(one), ...Array.from(two)]).size || 1;
+    return Math.round((overlap / total) * 100);
+  }, [a, b]);
+  return <ToolGrid><div className="card space-y-4"><textarea className="input h-32" value={a} onChange={(event) => setA(event.target.value)} /><textarea className="input h-32" value={b} onChange={(event) => setB(event.target.value)} /></div><OutputPanel value={`Similarity estimate: ${score}%\n\nThis browser check compares shared words. Use a full plagiarism API later for web-wide matching.`} slug="plagiarism-checker" /></ToolGrid>;
+}
+
+function UniversalTool({ slug, title, category }: { slug: string; title: string; category: string }) {
+  const [topic, setTopic] = useState(category === 'SEO' ? 'toolnest.app online tools' : 'Freelance web design service');
+  const [details, setDetails] = useState('');
+  const output = useMemo(() => makeUniversalOutput(slug, title, category, topic, details), [category, details, slug, title, topic]);
+  return <ToolGrid><div className="card space-y-4"><input className="input" value={topic} onChange={(event) => setTopic(event.target.value)} /><textarea className="input h-40" value={details} onChange={(event) => setDetails(event.target.value)} placeholder="Add URL, audience, tone, requirements, or source text..." /></div><OutputPanel value={output} slug={slug} /></ToolGrid>;
+}
+
 function NumberInput({ label, value, setValue }: { label: string; value: number; setValue: (value: number) => void }) {
   return <div><label className="label">{label}</label><input className="input" type="number" value={value} onChange={(event) => setValue(Number(event.target.value))} /></div>;
 }
@@ -376,6 +504,26 @@ function ResultBlock({ label, value, slug }: { label: string; value: string; slu
   return <div className="surface space-y-2 p-3"><div className="text-sm font-semibold text-slate-700">{label}</div><textarea className="input h-24 font-mono text-sm" readOnly value={value} /><CopyButton value={value} slug={slug} /></div>;
 }
 
+function makeUniversalOutput(slug: string, title: string, category: string, topic: string, details: string) {
+  const subject = topic.trim() || title;
+  if (slug.includes('keyword-research')) return `Seed keyword: ${subject}\n\nPrimary keywords:\n- ${subject} tool\n- best ${subject}\n- free ${subject}\n\nLong-tail keywords:\n- how to use ${subject}\n- ${subject} for small business\n- ${subject} checklist\n\nIntent clusters:\n- Informational: guides, examples, FAQs\n- Commercial: pricing, comparison, templates\n- Transactional: generator, checker, converter`;
+  if (slug.includes('meta-title')) return `Meta title options:\n1. ${subject} | Free Online Tool\n2. Best ${subject} Generator for Fast Results\n3. ${subject}: Create, Check, and Improve Online\n\nMeta description:\nUse this free ${subject} tool to create cleaner results, save time, and improve your workflow in minutes.`;
+  if (slug.includes('audit') || slug.includes('page-speed') || slug.includes('domain-authority') || slug.includes('backlink') || slug.includes('google-index') || slug.includes('broken-link')) return `${title} report for: ${subject}\n\nChecks:\n- Crawl important pages\n- Confirm indexable URLs\n- Review titles and meta descriptions\n- Check internal links and broken links\n- Review image size and performance\n- Track backlinks and referring domains\n\nNotes:\n${details || 'Add a URL or notes to customize this report.'}\n\nNext step: connect a live SEO API for real web-wide metrics.`;
+  if (slug.includes('blog-outline')) return `Blog outline: ${subject}\n\nH1: ${subject}\n\nH2: What it is\nH2: Why it matters\nH2: Step-by-step process\nH2: Common mistakes\nH2: Best tools and examples\nH2: FAQs\n\nCTA: Try ToolNest to speed up this workflow.`;
+  if (slug.includes('api-tester')) return `fetch('${subject}', {\n  method: 'GET',\n  headers: {\n    'Accept': 'application/json'\n  }\n})\n  .then((response) => response.json())\n  .then(console.log)\n  .catch(console.error);`;
+  if (slug.includes('cron')) return `Common cron expressions:\n\nEvery 5 minutes: */5 * * * *\nEvery hour: 0 * * * *\nEvery day at midnight: 0 0 * * *\nEvery Monday at 9:00: 0 9 * * 1\n\nFor ${subject}: choose the expression that matches your run frequency.`;
+  if (slug.includes('git-cheat')) return `Git commands for ${subject}:\n\ngit status\ngit checkout -b feature/${slugify(subject)}\ngit add .\ngit commit -m \"${subject}\"\ngit push -u origin feature/${slugify(subject)}\n\ngit pull --rebase origin main`;
+  if (slug.includes('curl-converter')) return `// Fetch version\nfetch('${subject.startsWith('http') ? subject : 'https://api.example.com'}', {\n  method: 'GET',\n  headers: { 'Content-Type': 'application/json' }\n});`;
+  if (slug.includes('env-file')) return `NEXT_PUBLIC_APP_NAME="${subject}"\nNEXT_PUBLIC_BASE_URL="https://example.com"\nAPI_KEY="replace_me"\nDATABASE_URL="replace_me"`;
+  if (slug.includes('docker')) return `docker run --name ${slugify(subject)} -p 3000:3000 ${slugify(subject)}:latest\n\n# Compose starter\nservices:\n  app:\n    image: ${slugify(subject)}:latest\n    ports:\n      - "3000:3000"`;
+  if (category === 'Design') return `${title} concept for: ${subject}\n\nStyle direction:\n- Clean SaaS look\n- Strong contrast\n- Reusable layout blocks\n- Export-ready sizes\n\nPrompt:\nCreate a professional ${title.toLowerCase()} for ${subject}. Use modern composition, balanced whitespace, and clear brand hierarchy.\n\nDetails:\n${details || 'Add brand colors, audience, and format for better results.'}`;
+  if (category === 'Business') return `${title}\n\nClient/project: ${subject}\n\nSummary:\n${details || 'Add scope, amount, dates, and payment terms.'}\n\nTemplate:\n- Scope of work\n- Deliverables\n- Timeline\n- Price / rate\n- Terms\n- Signature / approval`;
+  if (category === 'Content' || category === 'AI') return `${title} draft for: ${subject}\n\nHook:\nA clear result-focused opening for ${subject}.\n\nDraft:\n${details || `Create concise, useful content about ${subject}. Focus on benefits, examples, and a strong call to action.`}\n\nVariants:\n- Professional\n- Friendly\n- Short social caption\n- SEO-focused version`;
+  if (slug.includes('url-shortener')) return `Long URL: ${subject}\nSuggested slug: ${slugify(subject).slice(0, 32)}\nShort link preview: https://toolnests.app/go/${slugify(subject).slice(0, 16)}`;
+  if (slug.includes('meme')) return `Top text: WHEN YOU NEED ${subject.toUpperCase()}\nBottom text: TOOLNEST ALREADY HAS IT\n\nCaption ideas:\n- Built for speed.\n- One more tool, one less tab.\n- Freelance workflow unlocked.`;
+  return `${title}\n\nInput: ${subject}\n\nResult:\n${details || 'Add details to generate a more specific result.'}`;
+}
+
 function loadImage(src: string) {
   return new Promise<HTMLImageElement>((resolve, reject) => {
     const img = new Image();
@@ -383,6 +531,18 @@ function loadImage(src: string) {
     img.onerror = reject;
     img.src = src;
   });
+}
+
+function shiftHex(hex: string, amount: number) {
+  const value = parseInt(hex.slice(1), 16);
+  const r = Math.max(0, Math.min(255, ((value >> 16) & 255) + amount));
+  const g = Math.max(0, Math.min(255, ((value >> 8) & 255) + amount));
+  const b = Math.max(0, Math.min(255, (value & 255) + amount));
+  return `#${[r, g, b].map((item) => item.toString(16).padStart(2, '0')).join('')}`;
+}
+
+function slugify(value: string) {
+  return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'toolnest';
 }
 
 function hexToRgb(hex: string) {

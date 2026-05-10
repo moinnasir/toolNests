@@ -1,9 +1,9 @@
 'use client';
 
 const tiers = [
-  { name: 'Free', price: '$0', features: ['Image Converter', 'WhatsApp Link', 'CV Maker', 'OCR'], priceId: '' },
-  { name: 'Pro', price: '$5/mo', features: ['Invoice Maker', 'Expiring Links', 'Send Later'], priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_PRO || '' },
-  { name: 'Premium', price: '$12/mo', features: ['File Locker', 'Voice to Text', 'Video Converter', 'Priority Support'], priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_PREMIUM || '' },
+  { name: 'Free', price: '$0', features: ['100+ SEO, developer, design, content, and business tools', 'Ads-supported access', 'Image Converter, QR, JSON, Password, Resume, Invoice basics', 'Tool embedding previews'], priceId: '' },
+  { name: 'Pro', price: '$5/mo', features: ['Premium file sharing with expiry', 'No-ads workspace', 'Freelancer documents and business templates', 'API access starter plan', 'Affiliate-ready tool pages'], priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_PRO || '' },
+  { name: 'Premium', price: '$12/mo', features: ['AI credit system ready', 'Team workspace plan foundation', 'White-label SaaS positioning', 'Voice, video, locker, and AI-assisted tools', 'Priority support'], priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_PREMIUM || '' },
 ];
 
 export default function PricingPage() {
