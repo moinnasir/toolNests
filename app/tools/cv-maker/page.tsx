@@ -1,6 +1,8 @@
 'use client';
+
 import { useState } from 'react';
 import jsPDF from 'jspdf';
+import { ToolPageShell } from '@/components/tool-shell';
 import html2canvas from 'html2canvas';
 
 export default function CVMaker(){
@@ -25,8 +27,7 @@ export default function CVMaker(){
   };
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold">CV / Resume Maker</h1>
+    <ToolPageShell slug="cv-maker">
       <div className="grid md:grid-cols-2 gap-6">
         <div className="card space-y-4">
           <div className="grid md:grid-cols-2 gap-3">
@@ -99,7 +100,7 @@ export default function CVMaker(){
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageShell>
   );
 }
 

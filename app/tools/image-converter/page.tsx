@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { ToolErrorBanner, ToolPageShell } from '@/components/tool-shell';
 import { logToolUsage } from '@/lib/usage';
 
 const outputTypes = [
@@ -15,6 +16,7 @@ export default function ImageConverterPage() {
   const [quality, setQuality] = useState(0.92);
   const [result, setResult] = useState('');
   const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
 
   const selected = useMemo(() => outputTypes.find((type) => type.value === format) || outputTypes[0], [format]);
 
@@ -26,6 +28,7 @@ export default function ImageConverterPage() {
       return;
     }
 
+    setBusy(true);
     const imageUrl = URL.createObjectURL(file);
     const image = new Image();
     image.onload = async () => {
@@ -36,6 +39,7 @@ export default function ImageConverterPage() {
       if (!context) {
         setError('Canvas is not supported in this browser.');
         URL.revokeObjectURL(imageUrl);
+        setBusy(false);
         return;
       }
 
@@ -48,10 +52,12 @@ export default function ImageConverterPage() {
       setResult(dataUrl);
       URL.revokeObjectURL(imageUrl);
       await logToolUsage('image-converter', { format: selected.extension, size: file.size });
+      setBusy(false);
     };
     image.onerror = () => {
       setError('Could not read this image.');
       URL.revokeObjectURL(imageUrl);
+      setBusy(false);
     };
     image.src = imageUrl;
   };
@@ -59,11 +65,7 @@ export default function ImageConverterPage() {
   const name = file ? file.name.replace(/\.[^.]+$/, '') : 'converted-image';
 
   return (
-    <div className="space-y-6">
-      <header>
-        <h1 className="section-title">Image Converter</h1>
-        <p className="mt-2 text-slate-600">Convert PNG, JPG, and WebP files locally in your browser.</p>
-      </header>
+    <ToolPageShell slug="image-converter">
       <div className="grid gap-6 md:grid-cols-[0.9fr_1.1fr]">
         <div className="card space-y-4">
           <div>
@@ -73,30 +75,39 @@ export default function ImageConverterPage() {
           <div>
             <label className="label">Output format</label>
             <select className="input" value={format} onChange={(event) => setFormat(event.target.value)}>
-              {outputTypes.map((type) => <option key={type.value} value={type.value}>{type.label}</option>)}
+              {outputTypes.map((type) => (
+                <option key={type.value} value={type.value}>
+                  {type.label}
+                </option>
+              ))}
             </select>
           </div>
           <div>
             <label className="label">Quality ({Math.round(quality * 100)}%)</label>
-            <input className="w-full" type="range" min="0.4" max="1" step="0.01" value={quality} onChange={(event) => setQuality(Number(event.target.value))} />
+            <input className="w-full" type="range" min={0.4} max={1} step={0.01} value={quality} onChange={(event) => setQuality(Number(event.target.value))} />
           </div>
-          <button className="btn" onClick={convert}>Convert Image</button>
-          {error && <p className="text-sm text-red-300">{error}</p>}
+          <button type="button" className="btn" onClick={convert} disabled={busy}>
+            {busy ? 'Converting…' : 'Convert image'}
+          </button>
+          <ToolErrorBanner message={error} />
         </div>
         <div className="card space-y-4">
-          <h2 className="text-xl font-semibold">Preview</h2>
+          <h2 className="text-sm font-semibold text-slate-800">Preview</h2>
           {result ? (
             <>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={result} alt="Converted preview" className="max-h-[420px] w-full rounded-lg object-contain" />
-              <a className="btn" href={result} download={`${name}.${selected.extension}`}>Download {selected.label}</a>
+              <a className="btn" href={result} download={`${name}.${selected.extension}`}>
+                Download {selected.label}
+              </a>
             </>
           ) : (
-            <div className="flex min-h-64 items-center justify-center rounded-lg border border-dashed border-slate-200 text-slate-400">No converted image yet</div>
+            <div className="flex min-h-64 items-center justify-center rounded-lg border border-dashed border-slate-200 text-slate-500">
+              No converted image yet
+            </div>
           )}
         </div>
       </div>
-    </div>
+    </ToolPageShell>
   );
 }
-

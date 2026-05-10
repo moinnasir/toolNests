@@ -1,7 +1,9 @@
 'use client';
-import { useEffect, useState } from 'react';
 
-export default function VoiceToText(){
+import { useEffect, useState } from 'react';
+import { ToolPageShell } from '@/components/tool-shell';
+
+export default function VoiceToText() {
   const [file, setFile] = useState<File|null>(null);
   const [statusId, setStatusId] = useState<string>('');
   const [text, setText] = useState<string>('');
@@ -35,8 +37,7 @@ export default function VoiceToText(){
   }, [statusId]);
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Voice to Text</h1>
+    <ToolPageShell slug="voice-to-text" processing="server">
       <div className="card space-y-4">
         <input type="file" accept="audio/*,video/*" className="input" onChange={e=>setFile(e.target.files?.[0] || null)} />
         <button className="btn" onClick={start} disabled={!file || loading}>{loading ? 'Uploading...' : 'Transcribe'}</button>
@@ -48,7 +49,7 @@ export default function VoiceToText(){
           <pre className="whitespace-pre-wrap">{text}</pre>
         </div>
       )}
-    </div>
+    </ToolPageShell>
   );
 }
 

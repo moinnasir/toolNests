@@ -16,7 +16,7 @@ export default function Logo({ href = '/', compact = false }: LogoProps) {
       </svg>
       {!compact && (
         <span className="leading-none">
-          <span className="block text-lg font-black tracking-normal text-slate-950">ToolNests</span>
+          <span className="block text-lg font-black tracking-normal text-slate-950">ToolNest</span>
           <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-700">SaaS Toolkit</span>
         </span>
       )}

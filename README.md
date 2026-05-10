@@ -53,6 +53,8 @@ Payments:
 Optional:
 
 - `ASSEMBLYAI_API_KEY`
+- `OPENAI_API_KEY` and optional `OPENAI_MODEL` — enables “Generate with AI” for allowed AI/content tool slugs (server-side only).
+- `GOOGLE_PAGESPEED_API_KEY` (alias `GOOGLE_PAGESPEED_KEY` also supported) — enables live PageSpeed Insights in the Page Speed Analyzer universal tool.
 - `NEXT_PUBLIC_BASE_URL`
 - `NEXT_PUBLIC_GA_ID`
 - `NEXT_PUBLIC_ADSENSE_CA_PUB`

@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import Logo from '@/components/Logo';
+import { ToolPageShell } from '@/components/tool-shell';
 import { logToolUsage } from '@/lib/usage';
 
 type Item = { desc: string; qty: number; price: number };
@@ -50,12 +51,7 @@ export default function InvoiceMaker() {
   };
 
   return (
-    <div className="space-y-6">
-      <header>
-        <h1 className="section-title">Invoice Maker</h1>
-        <p className="mt-2 text-slate-600">Create a professional invoice with tax, discount, due date, notes, and PDF export.</p>
-      </header>
-
+    <ToolPageShell slug="invoice-maker">
       <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
         <div className="card space-y-5">
           <div className="grid gap-4 md:grid-cols-2">
@@ -156,7 +152,7 @@ export default function InvoiceMaker() {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageShell>
   );
 }
 

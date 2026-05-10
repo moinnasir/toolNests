@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { ToolPageShell } from '@/components/tool-shell';
 import { logToolUsage } from '@/lib/usage';
 
 type OutputFormat = 'mp4' | 'webm';
@@ -86,11 +87,7 @@ export default function VideoConverter() {
   };
 
   return (
-    <div className="space-y-6">
-      <header>
-        <h1 className="section-title">Video Converter</h1>
-        <p className="mt-2 text-slate-600">Convert uploaded videos or direct video file URLs. YouTube/social links need a downloader backend.</p>
-      </header>
+    <ToolPageShell slug="video-converter" processing="hybrid">
       <div className="card space-y-5">
         <div className="flex flex-wrap gap-2">
           <button className={mode === 'upload' ? 'btn' : 'btn-secondary'} onClick={() => setMode('upload')}>Upload file</button>
@@ -123,7 +120,7 @@ export default function VideoConverter() {
         {out && <a className="btn" href={out} download={`converted.${format}`}>Download</a>}
       </div>
       {out && <video src={out} controls className="w-full rounded-lg border border-slate-200" />}
-    </div>
+    </ToolPageShell>
   );
 }
 

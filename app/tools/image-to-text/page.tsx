@@ -1,6 +1,8 @@
 'use client';
+
 import { useState } from 'react';
 import Tesseract from 'tesseract.js';
+import { ToolPageShell } from '@/components/tool-shell';
 
 export default function ImageToText(){
   const [img, setImg] = useState<string>('');
@@ -21,8 +23,7 @@ export default function ImageToText(){
   };
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Image to Text (OCR)</h1>
+    <ToolPageShell slug="image-to-text">
       <div className="card space-y-4">
         <input type="file" accept="image/*" className="input" onChange={e=>{
           const f = e.target.files?.[0]; if(!f) return;
@@ -46,7 +47,7 @@ export default function ImageToText(){
         ) : 'No image selected'}</div>
         <div className="card"><h2 className="text-xl font-semibold mb-2">Result</h2><pre className="whitespace-pre-wrap">{text}</pre></div>
       </div>
-    </div>
+    </ToolPageShell>
   );
 }
 

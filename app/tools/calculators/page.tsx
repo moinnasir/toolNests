@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { ToolPageShell } from '@/components/tool-shell';
 
 export default function CalculatorsPage() {
   const [amount, setAmount] = useState(1000);
@@ -24,11 +25,7 @@ export default function CalculatorsPage() {
   }, [interest, loan, months]);
 
   return (
-    <div className="space-y-6">
-      <header>
-        <h1 className="section-title">Calculators</h1>
-        <p className="mt-2 text-slate-600">Quick calculators for freelancers and everyday business work.</p>
-      </header>
+    <ToolPageShell slug="calculators">
       <div className="grid gap-4 md:grid-cols-2">
         <div className="card space-y-4">
           <h2 className="text-xl font-bold text-slate-950">Percentage Calculator</h2>
@@ -56,6 +53,6 @@ export default function CalculatorsPage() {
           <div className="surface p-4 text-lg font-bold text-slate-950">Monthly EMI {emi.toFixed(2)}</div>
         </div>
       </div>
-    </div>
+    </ToolPageShell>
   );
 }

@@ -1,5 +1,7 @@
 'use client';
+
 import { useState } from 'react';
+import { ToolPageShell } from '@/components/tool-shell';
 import { storage, auth } from '@/lib/firebase';
 import { ref, uploadBytes } from 'firebase/storage';
 import { v4 as uuid } from 'uuid';
@@ -37,8 +39,7 @@ export default function FileLocker(){
   };
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold">File Locker</h1>
+    <ToolPageShell slug="file-locker" processing="server">
       <div className="card space-y-4">
         <div className="font-semibold">Lock a File</div>
         <input type="file" className="input" onChange={e=>setFile(e.target.files?.[0] || null)} />
@@ -53,7 +54,7 @@ export default function FileLocker(){
         <button className="btn" onClick={unlock}>Unlock</button>
         {downloadUrl && (<a className="btn" href={downloadUrl} target="_blank">Download File</a>)}
       </div>
-    </div>
-  )
+    </ToolPageShell>
+  );
 }
 

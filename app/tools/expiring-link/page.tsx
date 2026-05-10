@@ -5,6 +5,7 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable, type StorageReference, type UploadTaskSnapshot } from 'firebase/storage';
 import { v4 as uuid } from 'uuid';
 import { db, firebaseConfigured, storage } from '@/lib/firebase';
+import { ToolPageShell } from '@/components/tool-shell';
 import { logToolUsage } from '@/lib/usage';
 
 const expiryOptions = [
@@ -121,6 +122,7 @@ export default function ExpiringLinkTool() {
   };
 
   return (
+    <ToolPageShell slug="expiring-link" processing="server">
     <div className="-mx-4 -my-6 min-h-[calc(100vh-73px)] bg-[#eef3f0] px-4 py-6 md:-my-8 md:py-8">
       <section className="mx-auto grid min-h-[calc(100vh-120px)] max-w-6xl gap-6 lg:grid-cols-[390px_minmax(0,1fr)] lg:items-stretch">
         <div className="card flex flex-col gap-5 self-start p-0 lg:sticky lg:top-24">
@@ -269,6 +271,7 @@ export default function ExpiringLinkTool() {
         </div>
       </section>
     </div>
+    </ToolPageShell>
   );
 }
 

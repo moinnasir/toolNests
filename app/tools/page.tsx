@@ -1,14 +1,24 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 import ToolIcon from '@/components/ToolIcon';
 import { tools, toolHref } from '@/lib/tools';
 
 export default function ToolsPage() {
-  const categories = ['All', ...Array.from(new Set(tools.map((tool) => tool.category)))];
-  const [category, setCategory] = useState('All');
-  const [query, setQuery] = useState('');
+  const categories = useMemo(() => ['All', ...Array.from(new Set(tools.map((tool) => tool.category)))], []);
+  const searchParams = useSearchParams();
+  const initialCategory = searchParams.get('category') || 'All';
+  const initialQuery = searchParams.get('q') || '';
+  const [category, setCategory] = useState(categories.includes(initialCategory) ? initialCategory : 'All');
+  const [query, setQuery] = useState(initialQuery);
+
+  useEffect(() => {
+    const nextCategory = searchParams.get('category') || 'All';
+    setCategory(categories.includes(nextCategory) ? nextCategory : 'All');
+    setQuery(searchParams.get('q') || '');
+  }, [categories, searchParams]);
 
   const filtered = useMemo(() => tools.filter((tool) => {
     const matchesCategory = category === 'All' || tool.category === category;

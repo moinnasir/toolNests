@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { ToolPageShell } from '@/components/tool-shell';
 import { logToolUsage } from '@/lib/usage';
 
 function downloadCanvas(canvas: HTMLCanvasElement, name: string) {
@@ -14,17 +15,13 @@ export default function StampSignature() {
   const [tab, setTab] = useState<'signature' | 'stamp'>('signature');
 
   return (
-    <div className="space-y-6">
-      <header>
-        <h1 className="section-title">Stamp and Signature Generator</h1>
-        <p className="mt-2 text-slate-600">Draw a signature or generate a round stamp, then export as PNG.</p>
-      </header>
+    <ToolPageShell slug="stamp-signature">
       <div className="flex gap-3">
         <button className={tab === 'signature' ? 'btn' : 'btn-secondary'} onClick={() => setTab('signature')}>Signature</button>
         <button className={tab === 'stamp' ? 'btn' : 'btn-secondary'} onClick={() => setTab('stamp')}>Stamp</button>
       </div>
       {tab === 'signature' ? <SignatureTool /> : <StampTool />}
-    </div>
+    </ToolPageShell>
   );
 }
 

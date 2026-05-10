@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import jsPDF from 'jspdf';
+import { ToolPageShell } from '@/components/tool-shell';
 import { logToolUsage } from '@/lib/usage';
 
 export default function PdfToolsPage() {
@@ -31,11 +32,7 @@ export default function PdfToolsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <header>
-        <h1 className="section-title">PDF Tools</h1>
-        <p className="mt-2 text-slate-600">Start with image-to-PDF today. Merge and compress workflows are ready as roadmap cards.</p>
-      </header>
+    <ToolPageShell slug="pdf-tools">
       <div className="grid gap-4 md:grid-cols-3">
         <div className="card space-y-4 md:col-span-2">
           <h2 className="text-xl font-bold text-slate-950">Image to PDF</h2>
@@ -50,7 +47,7 @@ export default function PdfToolsPage() {
           <div className="surface p-3 text-sm text-slate-600">PDF to Images</div>
         </div>
       </div>
-    </div>
+    </ToolPageShell>
   );
 }
 

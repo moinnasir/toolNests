@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { ToolPageShell } from '@/components/tool-shell';
 import { logToolUsage } from '@/lib/usage';
 
 export default function QrGeneratorPage() {
@@ -9,11 +10,7 @@ export default function QrGeneratorPage() {
   const src = useMemo(() => `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(text || 'ToolNests')}`, [text, size]);
 
   return (
-    <div className="space-y-6">
-      <header>
-        <h1 className="section-title">QR Code Generator</h1>
-        <p className="mt-2 text-slate-600">Create QR codes for URLs, WhatsApp links, text, and contact prompts.</p>
-      </header>
+    <ToolPageShell slug="qr-generator" processing="hybrid">
       <div className="grid gap-6 md:grid-cols-[0.9fr_1.1fr]">
         <div className="card space-y-4">
           <div>
@@ -32,7 +29,7 @@ export default function QrGeneratorPage() {
           <a className="btn" href={src} download="toolnests-qr.png">Download PNG</a>
         </div>
       </div>
-    </div>
+    </ToolPageShell>
   );
 }
 

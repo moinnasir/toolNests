@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { ToolPageShell } from '@/components/tool-shell';
 import { logToolUsage } from '@/lib/usage';
 
 function cleanPhone(value: string) {
@@ -32,11 +33,7 @@ export default function WhatsAppLinkPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <header>
-        <h1 className="section-title">WhatsApp Link Generator</h1>
-        <p className="mt-2 text-slate-600">Create a shareable WhatsApp chat URL with a ready-to-send message.</p>
-      </header>
+    <ToolPageShell slug="whatsapp-link">
       <div className="grid gap-6 md:grid-cols-[0.9fr_1.1fr]">
         <div className="card space-y-4">
           <div className="grid grid-cols-[110px_1fr] gap-3">
@@ -65,10 +62,10 @@ export default function WhatsAppLinkPage() {
             <button className="btn" onClick={copy} disabled={!phone}>Copy Link</button>
             <a className="btn-secondary" href={link} target="_blank" rel="noreferrer">Open WhatsApp</a>
           </div>
-          {copied && <p className="text-sm text-emerald-300">Copied.</p>}
+          {copied ? <p className="text-sm font-medium text-emerald-700">Copied.</p> : null}
         </div>
       </div>
-    </div>
+    </ToolPageShell>
   );
 }
 

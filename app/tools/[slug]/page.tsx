@@ -25,5 +25,13 @@ export default function DynamicToolPage({ params }: Params) {
   const tool = tools.find((item) => item.slug === params.slug);
   if (!tool) notFound();
 
-  return <BrowserToolRunner slug={tool.slug} title={tool.name} description={tool.description} category={tool.category} />;
+  return (
+    <BrowserToolRunner
+      slug={tool.slug}
+      title={tool.name}
+      description={tool.description}
+      category={tool.category}
+      plan={tool.plan}
+    />
+  );
 }
