@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
+import ToolIcon from '@/components/ToolIcon';
 import { tools, toolHref } from '@/lib/tools';
 
 export default function ToolsPage() {
@@ -36,7 +37,10 @@ export default function ToolsPage() {
         {filtered.map((tool) => (
           <Link key={tool.slug} href={toolHref(tool.slug)} className="card block hover:border-blue-200 hover:shadow-md">
             <div className="flex items-start justify-between gap-3">
-              <span className="badge">{tool.category}</span>
+              <div className="flex items-center gap-3">
+                <ToolIcon tool={tool} size="sm" />
+                <span className="badge">{tool.category}</span>
+              </div>
               <span className="rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">{tool.plan}</span>
             </div>
             <h3 className="mt-4 text-lg font-bold text-slate-950">{tool.name}</h3>

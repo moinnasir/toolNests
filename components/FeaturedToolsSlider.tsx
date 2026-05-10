@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
+import ToolIcon from './ToolIcon';
 import { tools, toolHref } from '@/lib/tools';
 
 export default function FeaturedToolsSlider() {
@@ -33,7 +34,7 @@ export default function FeaturedToolsSlider() {
           <Link href={toolHref(active.slug)} className="btn mt-5">Open Tool</Link>
         </div>
         <div className="surface flex aspect-square items-center justify-center">
-          <div className="rounded-2xl bg-blue-600 p-5 text-4xl font-black text-white shadow-sm">{active.name.slice(0, 2).toUpperCase()}</div>
+          <ToolIcon tool={active} size="lg" />
         </div>
       </div>
       <div className="flex gap-1 px-5 pb-5">

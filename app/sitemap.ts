@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { tools, toolHref } from '@/lib/tools';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
@@ -13,20 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/settings',
     '/subscription',
     '/referrals',
-    '/tools/image-converter',
-    '/tools/whatsapp-link',
-    '/tools/invoice-maker',
-    '/tools/expiring-link',
-    '/tools/file-locker',
-    '/tools/voice-to-text',
-    '/tools/image-to-text',
-    '/tools/stamp-signature',
-    '/tools/send-later',
-    '/tools/cv-maker',
-    '/tools/video-converter',
-    '/tools/qr-generator',
-    '/tools/pdf-tools',
-    '/tools/calculators',
+    ...tools.map((tool) => toolHref(tool.slug)),
   ];
   const staticPages = pages.map(p => ({
     url: `${base}${p}`,

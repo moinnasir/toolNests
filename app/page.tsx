@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import FeaturedToolsSlider from '@/components/FeaturedToolsSlider';
 import Logo from '@/components/Logo';
+import ToolIcon from '@/components/ToolIcon';
 import { tools, toolHref } from '@/lib/tools';
 
 export default function Home() {
@@ -48,7 +49,10 @@ export default function Home() {
         <div className="grid gap-4 md:grid-cols-3">
           {popular.map((tool) => (
             <Link key={tool.slug} href={toolHref(tool.slug)} className="card block hover:border-blue-200 hover:shadow-md">
-              <span className="badge">{tool.category}</span>
+              <div className="flex items-center gap-3">
+                <ToolIcon tool={tool} size="sm" />
+                <span className="badge">{tool.category}</span>
+              </div>
               <h3 className="mt-4 text-lg font-bold text-slate-950">{tool.name}</h3>
               <p className="mt-2 text-sm text-slate-600">{tool.description}</p>
             </Link>
