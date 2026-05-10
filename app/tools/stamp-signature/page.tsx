@@ -17,11 +17,11 @@ export default function StampSignature() {
     <div className="space-y-6">
       <header>
         <h1 className="section-title">Stamp and Signature Generator</h1>
-        <p className="mt-2 text-white/70">Draw a signature or generate a round stamp, then export as PNG.</p>
+        <p className="mt-2 text-slate-600">Draw a signature or generate a round stamp, then export as PNG.</p>
       </header>
       <div className="flex gap-3">
-        <button className={`btn ${tab === 'signature' ? 'bg-sky-600' : 'bg-white/10'}`} onClick={() => setTab('signature')}>Signature</button>
-        <button className={`btn ${tab === 'stamp' ? 'bg-sky-600' : 'bg-white/10'}`} onClick={() => setTab('stamp')}>Stamp</button>
+        <button className={tab === 'signature' ? 'btn' : 'btn-secondary'} onClick={() => setTab('signature')}>Signature</button>
+        <button className={tab === 'stamp' ? 'btn' : 'btn-secondary'} onClick={() => setTab('stamp')}>Stamp</button>
       </div>
       {tab === 'signature' ? <SignatureTool /> : <StampTool />}
     </div>
@@ -89,7 +89,7 @@ function SignatureTool() {
 
 function StampTool() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [textTop, setTextTop] = useState('TOOLNEST');
+  const [textTop, setTextTop] = useState('ToolNests');
   const [textBottom, setTextBottom] = useState('APPROVED');
   const [center, setCenter] = useState('2026');
 
@@ -110,7 +110,7 @@ function StampTool() {
         <div><label className="label">Bottom Text</label><input className="input" value={textBottom} onChange={(event) => setTextBottom(event.target.value)} /></div>
         <div><label className="label">Center</label><input className="input" value={center} onChange={(event) => setCenter(event.target.value)} /></div>
       </div>
-      <canvas ref={canvasRef} className="mx-auto aspect-square w-full max-w-[420px] rounded-lg border border-white/20 bg-transparent" />
+      <canvas ref={canvasRef} className="mx-auto aspect-square w-full max-w-[420px] rounded-lg border border-slate-200 bg-transparent" />
       <button className="btn" onClick={async () => {
         downloadCanvas(canvasRef.current!, 'stamp.png');
         await logToolUsage('stamp-signature', { type: 'stamp' });
@@ -159,3 +159,4 @@ function arcText(ctx: CanvasRenderingContext2D, text: string, x: number, y: numb
   });
   ctx.restore();
 }
+

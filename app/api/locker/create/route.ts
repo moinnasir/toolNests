@@ -12,3 +12,4 @@ export async function POST(req: NextRequest) {
   await adminDb.collection('file_locker').add({ token, path, hash, createdAt: Date.now() });
   return NextResponse.json({ token });
 }
+

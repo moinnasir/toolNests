@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged, signOut, User } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
+import Logo from './Logo';
 
 const primaryLinks = [
   { href: '/tools', label: 'Tools' },
@@ -18,10 +19,10 @@ export default function Navbar() {
   useEffect(() => { return onAuthStateChanged(auth, setUser); }, []);
 
   return (
-    <nav className="sticky top-0 z-20 border-b border-white/10 bg-slate-950/85 backdrop-blur">
+    <nav className="sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur">
       <div className="mx-auto max-w-6xl px-4 py-3">
         <div className="flex items-center justify-between gap-4">
-          <Link href="/" className="text-xl font-bold text-white">ToolNest</Link>
+          <Logo />
           <button
             className="btn-secondary md:hidden"
             type="button"
@@ -43,7 +44,7 @@ export default function Navbar() {
           </div>
         </div>
         {open && (
-          <div className="mt-3 grid gap-2 border-t border-white/10 pt-3 md:hidden">
+          <div className="mt-3 grid gap-2 border-t border-slate-200 pt-3 md:hidden">
             {primaryLinks.map((link) => <Link key={link.href} className="navlink" href={link.href} onClick={() => setOpen(false)}>{link.label}</Link>)}
             {user && <Link className="navlink" href="/dashboard" onClick={() => setOpen(false)}>Dashboard</Link>}
             {user && <Link className="navlink" href="/settings" onClick={() => setOpen(false)}>Settings</Link>}
@@ -58,3 +59,4 @@ export default function Navbar() {
     </nav>
   );
 }
+

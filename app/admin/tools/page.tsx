@@ -10,7 +10,7 @@ export default function AdminToolsPage() {
           {tools.map((tool) => (
             <div key={tool.slug} className="card">
               <div className="font-semibold">{tool.name}</div>
-              <div className="mt-1 text-sm text-white/65">{tool.category} - {tool.plan}</div>
+              <div className="mt-1 text-sm text-slate-500">{tool.category} - {tool.plan}</div>
             </div>
           ))}
         </div>
@@ -18,3 +18,4 @@ export default function AdminToolsPage() {
     </AdminGate>
   );
 }
+

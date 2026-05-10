@@ -8,7 +8,7 @@ export default function ContactPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-5">
       <h1 className="section-title">Contact</h1>
-      <p className="text-white/70">Send a message for support, partnerships, or custom ToolNest deployment help.</p>
+      <p className="text-slate-600">Send a message for support, partnerships, or custom ToolNests deployment help.</p>
       <form
         className="card space-y-4"
         onSubmit={(event) => {
@@ -34,3 +34,4 @@ export default function ContactPage() {
     </div>
   );
 }
+

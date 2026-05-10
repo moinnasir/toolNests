@@ -38,7 +38,8 @@ export default function NewPost(){
       <textarea className="input h-24" placeholder="Short excerpt (optional)" value={excerpt} onChange={e=>setExcerpt(e.target.value)} />
       <textarea className="input h-80 font-mono" placeholder="Markdown content" value={content} onChange={e=>setContent(e.target.value)} />
       <button className="btn" onClick={publish}>Publish</button>
-      {msg && <div className="text-white/80">{msg}</div>}
+      {msg && <div className="text-slate-600">{msg}</div>}
     </div>
   );
 }
+

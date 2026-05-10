@@ -5,8 +5,9 @@ export default function AdminUsersPage() {
     <AdminGate>
       <div className="space-y-4">
         <h1 className="section-title">Manage Users</h1>
-        <div className="card text-white/75">Connect Firebase Admin user listing here when deploying with service account credentials.</div>
+        <div className="card text-slate-600">Connect Firebase Admin user listing here when deploying with service account credentials.</div>
       </div>
     </AdminGate>
   );
 }
+

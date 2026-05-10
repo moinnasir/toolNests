@@ -20,3 +20,4 @@ export async function GET(){
   await Promise.all(batchPromises);
   return NextResponse.json({ processed: snap.size });
 }
+

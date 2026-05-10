@@ -37,15 +37,16 @@ export default function AdminPage() {
     <div className="space-y-6">
       <h1 className="section-title">Admin Dashboard</h1>
       <div className="grid gap-4 md:grid-cols-4">
-        <Link className="card block text-white hover:bg-white/10" href="/admin/users">Users</Link>
-        <Link className="card block text-white hover:bg-white/10" href="/admin/tools">Tool Stats</Link>
-        <Link className="card block text-white hover:bg-white/10" href="/admin/files">File Logs</Link>
-        <Link className="card block text-white hover:bg-white/10" href="/admin/payments">Payments</Link>
+        <Link className="card block text-slate-900 hover:bg-blue-50" href="/admin/users">Users</Link>
+        <Link className="card block text-slate-900 hover:bg-blue-50" href="/admin/tools">Tool Stats</Link>
+        <Link className="card block text-slate-900 hover:bg-blue-50" href="/admin/files">File Logs</Link>
+        <Link className="card block text-slate-900 hover:bg-blue-50" href="/admin/payments">Payments</Link>
       </div>
       <div className="card">
         <h2 className="mb-2 text-xl font-semibold">Tool Stats</h2>
-        <p className="text-white/80">Recent usage docs: {usageDocs}</p>
+        <p className="text-slate-600">Recent usage docs: {usageDocs}</p>
       </div>
     </div>
   );
 }
+

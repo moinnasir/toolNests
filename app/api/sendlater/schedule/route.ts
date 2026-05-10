@@ -10,3 +10,4 @@ export async function POST(req: NextRequest){
   await adminDb.collection('scheduled_emails').add({ to, subject, body, sendAt: target, sent: false, createdAt: Date.now() });
   return NextResponse.json({ ok: true });
 }
+

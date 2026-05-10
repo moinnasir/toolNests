@@ -31,9 +31,10 @@ export default function SendLater(){
           <input className="input max-w-xs" type="datetime-local" value={sendAt} onChange={e=>setSendAt(e.target.value)} />
         </div>
         <button className="btn" onClick={schedule}>Schedule Email</button>
-        {msg && <div className="text-white/80">{msg}</div>}
-        <p className="text-xs text-white/60">Tip: Vercel cron ko <code>/api/sendlater/run</code> par har 5–10 min hit karne ke liye configure karein.</p>
+        {msg && <div className="text-slate-600">{msg}</div>}
+        <p className="text-xs text-slate-500">Tip: Vercel cron ko <code>/api/sendlater/run</code> par har 5–10 min hit karne ke liye configure karein.</p>
       </div>
     </div>
   );
 }
+

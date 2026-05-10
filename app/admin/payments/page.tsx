@@ -5,8 +5,9 @@ export default function AdminPaymentsPage() {
     <AdminGate>
       <div className="space-y-4">
         <h1 className="section-title">Payments</h1>
-        <div className="card text-white/75">Stripe checkout and EasyPaisa initiation are available from Pricing. Add webhooks before full production subscription automation.</div>
+        <div className="card text-slate-600">Stripe checkout and EasyPaisa initiation are available from Pricing. Add webhooks before full production subscription automation.</div>
       </div>
     </AdminGate>
   );
 }
+

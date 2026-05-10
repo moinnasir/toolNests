@@ -9,3 +9,4 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   if (loading) { return <div className="mx-auto max-w-6xl px-4 py-16">Loading...</div>; }
   return <>{children}</>;
 }
+

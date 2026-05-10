@@ -24,6 +24,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/tools/send-later',
     '/tools/cv-maker',
     '/tools/video-converter',
+    '/tools/qr-generator',
+    '/tools/pdf-tools',
+    '/tools/calculators',
   ];
   const staticPages = pages.map(p => ({
     url: `${base}${p}`,
@@ -33,3 +36,4 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
   return staticPages;
 }
+

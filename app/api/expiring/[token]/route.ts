@@ -10,3 +10,4 @@ export async function GET(req: NextRequest, { params }: { params: { token: strin
   if (Date.now() > Number(doc.expiresAt)) return NextResponse.json({ error: 'Expired' }, { status: 410 });
   return NextResponse.redirect(doc.url, 302);
 }
+

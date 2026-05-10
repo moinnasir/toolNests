@@ -23,12 +23,13 @@ export default function BlogList(){
         {posts.map(p => (
           <Link key={p.id} href={`/blog/${p.id}`} className="card block">
             <div className="text-xl font-semibold">{p.title}</div>
-            <div className="text-white/70 text-sm">{new Date(p.publishedAt || Date.now()).toLocaleString()}</div>
-            <p className="text-white/80 mt-2 line-clamp-2">{p.excerpt || ''}</p>
+            <div className="text-slate-600 text-sm">{new Date(p.publishedAt || Date.now()).toLocaleString()}</div>
+            <p className="text-slate-600 mt-2 line-clamp-2">{p.excerpt || ''}</p>
           </Link>
         ))}
-        {posts.length===0 && <div className="text-white/60">No posts yet.</div>}
+        {posts.length===0 && <div className="text-slate-500">No posts yet.</div>}
       </div>
     </div>
   );
 }
+

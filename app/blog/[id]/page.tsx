@@ -21,8 +21,9 @@ export default function BlogPost({ params }: { params: { id: string } }){
   return (
     <article className="prose prose-invert max-w-3xl">
       <h1>{post.title}</h1>
-      <div className="text-white/60 text-sm">{new Date(post.publishedAt || Date.now()).toLocaleString()}</div>
+      <div className="text-slate-500 text-sm">{new Date(post.publishedAt || Date.now()).toLocaleString()}</div>
       <ReactMarkdown>{post.content || ''}</ReactMarkdown>
     </article>
   );
 }
+

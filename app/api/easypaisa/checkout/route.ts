@@ -38,3 +38,4 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.redirect(`${endpoint}?${params.toString()}`, 303);
 }
+

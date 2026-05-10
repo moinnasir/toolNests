@@ -1,31 +1,52 @@
+'use client';
+
 import Link from 'next/link';
+import { useMemo, useState } from 'react';
 import { tools, toolHref } from '@/lib/tools';
 
 export default function ToolsPage() {
-  const categories = Array.from(new Set(tools.map((tool) => tool.category)));
+  const categories = ['All', ...Array.from(new Set(tools.map((tool) => tool.category)))];
+  const [category, setCategory] = useState('All');
+  const [query, setQuery] = useState('');
+
+  const filtered = useMemo(() => tools.filter((tool) => {
+    const matchesCategory = category === 'All' || tool.category === category;
+    const haystack = [tool.name, tool.description, tool.category, tool.plan, ...(tool.keywords || [])].join(' ').toLowerCase();
+    return matchesCategory && haystack.includes(query.toLowerCase());
+  }), [category, query]);
 
   return (
     <div className="space-y-8">
-      <header className="space-y-2">
-        <h1 className="section-title">Tools</h1>
-        <p className="max-w-2xl text-white/70">Choose any ToolNest utility. Browser-based tools work immediately; cloud-backed tools need Firebase or API keys.</p>
+      <header className="grid gap-5 rounded-2xl border border-blue-100 bg-blue-50/70 p-6 md:grid-cols-[1fr_280px] md:items-end">
+        <div>
+          <p className="eyebrow">Tool library</p>
+          <h1 className="mt-2 text-4xl font-black text-slate-950">Find the right tool fast.</h1>
+          <p className="mt-3 max-w-2xl text-slate-600">Search by task, category, or plan. Browser tools work immediately; cloud-backed tools need service keys.</p>
+        </div>
+        <input className="input" placeholder="Search tools..." value={query} onChange={(event) => setQuery(event.target.value)} />
       </header>
-      {categories.map((category) => (
-        <section key={category} className="space-y-3">
-          <h2 className="text-xl font-semibold">{category}</h2>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {tools.filter((tool) => tool.category === category).map((tool) => (
-              <Link key={tool.slug} href={toolHref(tool.slug)} className="card block text-white hover:bg-white/10">
-                <div className="flex items-start justify-between gap-3">
-                  <h3 className="font-semibold">{tool.name}</h3>
-                  <span className="rounded-full bg-white/10 px-2 py-1 text-xs text-white/75">{tool.plan}</span>
-                </div>
-                <p className="mt-2 text-sm text-white/70">{tool.description}</p>
-              </Link>
-            ))}
-          </div>
-        </section>
-      ))}
+
+      <div className="flex flex-wrap gap-2">
+        {categories.map((item) => (
+          <button key={item} className={item === category ? 'btn' : 'btn-secondary'} onClick={() => setCategory(item)}>{item}</button>
+        ))}
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {filtered.map((tool) => (
+          <Link key={tool.slug} href={toolHref(tool.slug)} className="card block hover:border-blue-200 hover:shadow-md">
+            <div className="flex items-start justify-between gap-3">
+              <span className="badge">{tool.category}</span>
+              <span className="rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">{tool.plan}</span>
+            </div>
+            <h3 className="mt-4 text-lg font-bold text-slate-950">{tool.name}</h3>
+            <p className="mt-2 text-sm leading-6 text-slate-600">{tool.description}</p>
+          </Link>
+        ))}
+      </div>
+
+      {filtered.length === 0 && <div className="card text-slate-600">No tools found for this search.</div>}
     </div>
   );
 }
+

@@ -20,3 +20,4 @@ export default function AdminGate({ children }: { children: ReactNode }) {
   if (!ADMIN_EMAILS.includes(user.email || '')) return <div>Not authorized.</div>;
   return <>{children}</>;
 }
+

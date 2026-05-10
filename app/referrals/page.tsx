@@ -49,12 +49,13 @@ export default function Referrals(){
       <h1 className="text-3xl font-bold">Referrals</h1>
       {!uid ? <div className="card">Please login to get your referral link.</div> : (
         <div className="card space-y-3">
-          <div className="text-white/80">Share this link and earn credits (demo):</div>
+          <div className="text-slate-600">Share this link and earn credits (demo):</div>
           <input className="input font-mono" readOnly value={link} />
           <button className="btn" onClick={()=>navigator.clipboard.writeText(link)}>Copy Link</button>
-          <div className="text-white/80">Signups via your code: <b>{count}</b></div>
+          <div className="text-slate-600">Signups via your code: <b>{count}</b></div>
         </div>
       )}
     </div>
   );
 }
+

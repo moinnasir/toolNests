@@ -10,7 +10,7 @@ function cleanPhone(value: string) {
 export default function WhatsAppLinkPage() {
   const [countryCode, setCountryCode] = useState('92');
   const [phone, setPhone] = useState('');
-  const [message, setMessage] = useState('Hello, I found you through ToolNest.');
+  const [message, setMessage] = useState('Hello, I found you through ToolNests.');
   const [campaign, setCampaign] = useState('');
   const [copied, setCopied] = useState(false);
 
@@ -35,7 +35,7 @@ export default function WhatsAppLinkPage() {
     <div className="space-y-6">
       <header>
         <h1 className="section-title">WhatsApp Link Generator</h1>
-        <p className="mt-2 text-white/70">Create a shareable WhatsApp chat URL with a ready-to-send message.</p>
+        <p className="mt-2 text-slate-600">Create a shareable WhatsApp chat URL with a ready-to-send message.</p>
       </header>
       <div className="grid gap-6 md:grid-cols-[0.9fr_1.1fr]">
         <div className="card space-y-4">
@@ -71,3 +71,4 @@ export default function WhatsAppLinkPage() {
     </div>
   );
 }
+

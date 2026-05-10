@@ -40,7 +40,7 @@ export default function VoiceToText(){
       <div className="card space-y-4">
         <input type="file" accept="audio/*,video/*" className="input" onChange={e=>setFile(e.target.files?.[0] || null)} />
         <button className="btn" onClick={start} disabled={!file || loading}>{loading ? 'Uploading...' : 'Transcribe'}</button>
-        {statusId && <div className="text-white/70 text-sm">Job ID: {statusId}</div>}
+        {statusId && <div className="text-slate-600 text-sm">Job ID: {statusId}</div>}
       </div>
       {text && (
         <div className="card">
@@ -51,3 +51,4 @@ export default function VoiceToText(){
     </div>
   );
 }
+

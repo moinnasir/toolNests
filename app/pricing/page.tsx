@@ -11,7 +11,7 @@ export default function PricingPage() {
     <div className="space-y-8">
       <header>
         <h1 className="section-title">Pricing</h1>
-        <p className="mt-2 text-white/70">Start free, then upgrade through Stripe or EasyPaisa when your payment credentials are configured.</p>
+        <p className="mt-2 text-slate-600">Start free, then upgrade through Stripe or EasyPaisa when your payment credentials are configured.</p>
       </header>
       <div className="grid gap-6 md:grid-cols-3">
         {tiers.map((tier) => (
@@ -20,7 +20,7 @@ export default function PricingPage() {
               <h2 className="text-xl font-semibold">{tier.name}</h2>
               <div className="mt-2 text-3xl font-bold">{tier.price}</div>
             </div>
-            <ul className="ml-5 list-disc text-white/80">
+            <ul className="ml-5 list-disc text-slate-600">
               {tier.features.map((feature) => <li key={feature}>{feature}</li>)}
             </ul>
             {tier.name === 'Free' ? (
@@ -44,3 +44,4 @@ export default function PricingPage() {
     </div>
   );
 }
+

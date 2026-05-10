@@ -62,7 +62,7 @@ export default function ImageConverterPage() {
     <div className="space-y-6">
       <header>
         <h1 className="section-title">Image Converter</h1>
-        <p className="mt-2 text-white/70">Convert PNG, JPG, and WebP files locally in your browser.</p>
+        <p className="mt-2 text-slate-600">Convert PNG, JPG, and WebP files locally in your browser.</p>
       </header>
       <div className="grid gap-6 md:grid-cols-[0.9fr_1.1fr]">
         <div className="card space-y-4">
@@ -92,10 +92,11 @@ export default function ImageConverterPage() {
               <a className="btn" href={result} download={`${name}.${selected.extension}`}>Download {selected.label}</a>
             </>
           ) : (
-            <div className="flex min-h-64 items-center justify-center rounded-lg border border-dashed border-white/20 text-white/50">No converted image yet</div>
+            <div className="flex min-h-64 items-center justify-center rounded-lg border border-dashed border-slate-200 text-slate-400">No converted image yet</div>
           )}
         </div>
       </div>
     </div>
   );
 }
+

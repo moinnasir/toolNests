@@ -37,7 +37,7 @@ export default function ImageToText(){
           </select>
         </div>
         <button className="btn" onClick={doOCR}>Extract Text</button>
-        {progress>0 && progress<100 && <div className="text-sm text-white/70">Processing… {progress}%</div>}
+        {progress>0 && progress<100 && <div className="text-sm text-slate-600">Processing… {progress}%</div>}
       </div>
       <div className="grid md:grid-cols-2 gap-6">
         <div className="card">{img ? (
@@ -49,3 +49,4 @@ export default function ImageToText(){
     </div>
   );
 }
+
